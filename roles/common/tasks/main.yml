@@ -50,3 +50,28 @@
       state: present
       flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
       method: user
+
+# Set up aliases
+- name: set up aliases
+  copy:
+      src: files/aliases
+      dest: ~/.zsh_aliases
+      mode: 0644
+
+- name: change shell to zsh (Amazon Linux)
+  lineinfile:
+      path: ~/.bashrc
+      regexp: '^export SHELL'
+      line: export SHELL=$(which zsh); [ -n "$SSH_TTY" ] && exec $SHELL;
+  when: ansible_facts['distribution'] == "Amazon"
+
+- name: change shell to zsh
+  become: yes
+  user:
+      name: "{{ current_user }}"
+      shell: /bin/zsh
+
+- name: ensure .zsh.d folder exists
+  file:
+      path: ~/.zsh.d
+      state: directory

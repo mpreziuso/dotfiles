@@ -1,0 +1,43 @@
+- name: install dbeaver
+  flatpak:
+      name: io.dbeaver.DBeaverCommunity
+      state: present
+      method: user
+
+- name: install docker-compose
+  become: yes
+  get_url:
+      url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
+      dest: /usr/local/bin/docker-compose
+      mode: 0755
+
+- name: clone oh-my-zsh
+  git:
+      repo: https://github.com/ohmyzsh/ohmyzsh.git
+      dest: ~/.oh-my-zsh
+      version: master
+      accept_hostkey: yes
+
+- name: install cht.sh
+  become: yes
+  copy:
+      src: files/cht.sh
+      dest: /usr/local/bin/cht.sh
+      mode: 0755
+
+- name: add cht.sh autocompletion
+  copy:
+      src: files/zsh_cht
+      dest: ~/.zsh.d/_cht
+
+- name: install zsh autocompletions
+  git:
+      repo: https://github.com/zsh-users/zsh-completions
+      dest: ~/.oh-my-zsh/custom/plugins/zsh-completions
+      version: master
+      accept_hostkey: yes
+
+- name: configure zsh
+  copy:
+      src: files/zshrc
+      dest: ~/.zshrc

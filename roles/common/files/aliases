@@ -1,0 +1,9 @@
+#############
+# Git aliases
+#############
+alias c='git commit'
+alias s='git status'
+alias p='git pull'
+alias pp='git pull --no-edit && git push'
+
+alias reload-aliases='. ~/.zsh_aliases' 
