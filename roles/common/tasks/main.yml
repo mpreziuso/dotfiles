@@ -31,3 +31,21 @@
       upgrade: dist
   when: (ansible_facts['distribution'] == "Ubuntu" or
          ansible_facts['distribution'] == "Debian")
+
+- name: install packages (nmap, docker, git, zsh, flatpak)
+  package:
+    name:
+        - nmap
+        - docker
+        - git
+        - git-extras
+        - zsh
+        - flatpak
+    state: latest
+
+- name: add flatpak repositories
+  flatpak_remote:
+      name: flathub
+      state: present
+      flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+      method: user
