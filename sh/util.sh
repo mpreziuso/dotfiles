@@ -49,18 +49,53 @@ install() {
 
     local PACKAGE_NAME="${1:-}"
 
-    local OS_NAME
-    OS_NAME=$(grep '^NAME' /etc/os-release | cut -d= -f 2 | tr -d '"')
-
-    if [ "${OS_NAME}" = "Fedora" ]; then
+    if [ is_os_dnf_rpm_based ]; then
         dnf install ${PACKAGE_NAME} -y
-    elif [ "${OS_NAME}" = "Amazon Linux" ]; then
+    elif [ is_os_yum_rpm_based ]; then
         yum install ${PACKAGE_NAME} -y
-    elif [ "${OS_NAME}" = "Raspbian GNU/Linux" ] ||
-         [ "${OS_NAME}" = "Ubuntu" ]; then
+    elif [ is_os_deb_based ]; then
         apt-get update && apt-get install ${PACKAGE_NAME} -y
     else
         echo "Unsupported OS. Please install Ansible before proceeding. Not that you have much choice... =)"
         exit 1
     fi
+}
+
+get_os_name() {
+    grep '^NAME' /etc/os-release | cut -d= -f 2 | tr -d '"'
+}
+
+is_os_dnf_rpm_based() {
+    local OS_NAME
+    OS_NAME=$(get_os_name)
+
+    if [ "${OS_NAME}" = "Fedora" ]; then
+        return 0
+    fi
+
+    return 1
+}
+
+is_os_yum_rpm_based() {
+    local OS_NAME
+    OS_NAME=$(get_os_name)
+
+    if [ "${OS_NAME}" = "Amazon Linux" ] || 
+       [ "${OS_NAME}" = "CentOS" ] ||
+       [ "${OS_NAME}" = "RedHat" ]; then
+        return 0
+    fi
+
+    return 1
+}
+
+is_os_deb_based() {
+    local OS_NAME
+    OS_NAME=$(get_os_name)
+
+    if [ "${OS_NAME}" = "Raspbian GNU/Linux" ] ||
+         [ "${OS_NAME}" = "Ubuntu" ]; then
+        return 0
+    fi
+    return 1
 }
