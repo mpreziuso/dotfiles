@@ -1,0 +1,33 @@
+---
+# This task contains common plays that will be run on all nodes
+
+- name: upgrade all packages (DNF)
+  become: yes
+  dnf:
+      name: "*"
+      state: latest
+  when: ansible_facts['distribution'] == "Fedora"
+
+- name: upgrade all packages (YUM)
+  become: yes
+  yum:
+      name: "*"
+      state: latest
+  when: (ansible_facts['distribution'] == "CentOS" or
+         ansible_facts['distribution'] == "RedHat")
+
+- name: update all apt repositories (APT)
+  become: yes
+  apt:
+      update_cache: yes
+      force_apt_get: yes
+      cache_valid_time: 3600
+  when: (ansible_facts['distribution'] == "Ubuntu" or
+         ansible_facts['distribution'] == "Debian")
+
+- name: update all packages (APT)
+  become: yes
+  apt:
+      upgrade: dist
+  when: (ansible_facts['distribution'] == "Ubuntu" or
+         ansible_facts['distribution'] == "Debian")

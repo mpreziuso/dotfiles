@@ -1,0 +1,7 @@
+---
+# This playbook configures the whole development environment
+- name: 
+  hosts: local
+  roles:
+      - common
+
