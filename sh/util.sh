@@ -59,5 +59,8 @@ install() {
     elif [ "${OS_NAME}" = "Raspbian GNU/Linux" ] ||
          [ "${OS_NAME}" = "Ubuntu" ]; then
         apt-get update && apt-get install ${PACKAGE_NAME} -y
+    else
+        echo "Unsupported OS. Please install Ansible before proceeding. Not that you have much choice... =)"
+        exit 1
     fi
 }
