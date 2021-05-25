@@ -56,5 +56,8 @@ install() {
         dnf install ${PACKAGE_NAME} -y
     elif [ "${OS_NAME}" = "Amazon Linux" ]; then
         yum install ${PACKAGE_NAME} -y
+    elif [ "${OS_NAME}" = "Raspbian GNU/Linux" ] ||
+         [ "${OS_NAME}" = "Ubuntu" ]; then
+        apt-get update && apt-get install ${PACKAGE_NAME} -y
     fi
 }
