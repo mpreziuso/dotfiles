@@ -1,6 +1,6 @@
 ---
 # This playbook configures the whole development environment
-- name: 
+- name: Bootstrap development environment
   hosts: local
   roles:
       - common
