@@ -33,6 +33,7 @@
          ansible_facts['distribution'] == "Debian")
 
 - name: install packages (nmap, docker, git, zsh, flatpak)
+  become: yes
   package:
     name:
         - nmap
