@@ -43,11 +43,11 @@ install() {
 
     local PACKAGE_NAME="${1:-}"
 
-    if [ is_os_dnf_rpm_based ]; then
+    if is_os_dnf_rpm_based; then
         dnf install ${PACKAGE_NAME} -y
-    elif [ is_os_yum_rpm_based ]; then
+    elif is_os_yum_rpm_based; then
         yum install ${PACKAGE_NAME} -y
-    elif [ is_os_deb_based ]; then
+    elif is_os_deb_based; then
         apt-get update && apt-get install ${PACKAGE_NAME} -y
     else
         echo "Unsupported OS. Please install Ansible before proceeding. Not that you have much choice... =)"
