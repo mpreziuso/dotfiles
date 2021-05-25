@@ -50,7 +50,7 @@ install() {
     local PACKAGE_NAME="${1:-}"
 
     local OS_NAME
-    OS_NAME=$(grep '^NAME' /etc/os-release | cut -d= -f 2)
+    OS_NAME=$(grep '^NAME' /etc/os-release | cut -d= -f 2 | tr -d '"')
 
     if [ "${OS_NAME}" = "Fedora" ]; then
         dnf install ${PACKAGE_NAME} -y
