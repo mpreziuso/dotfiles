@@ -1,6 +1,4 @@
-#-----------------------------------------
 # Confirm the correct number of arguments
-#-----------------------------------------
 argument_check() {
   local OPTIND
   while getopts "e:n:f:" OPTION
@@ -25,9 +23,7 @@ argument_check() {
   return 0
 }
 
-#-------------------------------------------------------
 # Ensure the script is being executed by a specific user
-#-------------------------------------------------------
 ensure_i_am() {
   argument_check -e 1 -n $# -f ensure_i_am
 
@@ -41,9 +37,7 @@ ensure_i_am() {
   fi
 }
 
-#----------------------------
 # Install via package manger
-#----------------------------
 install() {
     argument_check -e 1 -n $# -f install
 
@@ -99,3 +93,4 @@ is_os_deb_based() {
     fi
     return 1
 }
+

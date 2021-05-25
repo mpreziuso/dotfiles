@@ -1,6 +1,4 @@
-#-------------------
 # Add APT repository
-#-------------------
 add_apt_repository() {
   argument_check -e 3 -n $# -f add_apt_repository 
 
