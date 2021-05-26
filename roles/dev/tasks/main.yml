@@ -44,3 +44,54 @@
   copy:
       src: files/zshrc
       dest: ~/.zshrc
+
+- name: install neovim
+  become: yes
+  get_url:
+      url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+      dest: /usr/local/bin/nvim
+      mode: 0755
+
+- name: configure neovim
+  copy:
+      src: files/nvim
+      dest: ~/.config
+
+- name: install maven
+  become: yes
+  unarchive:
+      src: https://ftp.heanet.ie/mirrors/www.apache.org/dist/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz
+      dest: /opt
+      remote_src: yes
+  when: "'/opt/apache-maven-3.8.1/bin/mvn' is not file"
+
+- name: install gradle
+  become: yes
+  unarchive:
+      src: https://downloads.gradle-dn.com/distributions/gradle-7.0.2-bin.zip
+      dest: /opt
+      remote_src: yes
+  when: "'/opt/gradle-7.0.2/bin/gradle' is not file"
+
+- name: clone eclipse.jdt.ls
+  git:
+      repo: https://github.com/eclipse/eclipse.jdt.ls
+      dest: ~/dev/eclipse/eclipse.jdt.ls
+
+- name: build eclipse.jdt.ls
+  command: /opt/apache-maven-3.8.1/bin/mvn clean install -DskipTests
+  args:
+      chdir: ~/dev/eclipse/eclipse.jdt.ls
+
+- name: remove possible incompatible eclipse.jdt.ls state
+  file:
+      path: ~/.local/share/eclipse
+      state: absent
+
+- name: configure Java LSP
+  become: yes
+  copy:
+      src: files/nvim/java-lsp.sh
+      dest: /usr/local/bin/java-lsp.sh
+      mode: 0755
+
