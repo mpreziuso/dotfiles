@@ -64,10 +64,10 @@
     state: latest
   when: ansible_pkg_mgr in ('dnf')
 
-- name: install Java 11 (Fedora)
+- name: install Java 11 (Ubuntu)
   become: yes
   package:
-    name: java-11-openjdk-devel
+    name: openjdk-11-jdk
     state: latest
   when: ansible_pkg_mgr in ('apt')
 
