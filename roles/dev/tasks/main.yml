@@ -57,21 +57,35 @@
       src: files/nvim
       dest: ~/.config
 
+- name: install Java 11 (Fedora)
+  become: yes
+  package:
+    name: java-11-openjdk-devel
+    state: latest
+  when: ansible_pkg_mgr in ('dnf')
+
+- name: install Java 11 (Fedora)
+  become: yes
+  package:
+    name: java-11-openjdk-devel
+    state: latest
+  when: ansible_pkg_mgr in ('apt')
+
 - name: install maven
   become: yes
   unarchive:
-      src: https://ftp.heanet.ie/mirrors/www.apache.org/dist/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz
+      src: https://ftp.heanet.ie/mirrors/www.apache.org/dist/maven/maven-3/{{ apache_maven_version }}/binaries/apache-maven-{{ apache_maven_version }}-bin.tar.gz
       dest: /opt
       remote_src: yes
-  when: "'/opt/apache-maven-3.8.1/bin/mvn' is not file"
+  when: "'$(which mvn)' is not file"
 
 - name: install gradle
   become: yes
   unarchive:
-      src: https://downloads.gradle-dn.com/distributions/gradle-7.0.2-bin.zip
+      src: https://downloads.gradle-dn.com/distributions/gradle-{{ gradle_version }}-bin.zip
       dest: /opt
       remote_src: yes
-  when: "'/opt/gradle-7.0.2/bin/gradle' is not file"
+  when: "'$(which gradle)' is not file"
 
 - name: clone eclipse.jdt.ls
   git:
@@ -79,9 +93,10 @@
       dest: ~/dev/eclipse/eclipse.jdt.ls
 
 - name: build eclipse.jdt.ls
-  command: /opt/apache-maven-3.8.1/bin/mvn clean install -DskipTests
+  command: /opt/apache-maven-{{ apache_maven_version }}/bin/mvn clean install -DskipTests
   args:
       chdir: ~/dev/eclipse/eclipse.jdt.ls
+
 
 - name: remove possible incompatible eclipse.jdt.ls state
   file:

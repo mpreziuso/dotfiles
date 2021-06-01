@@ -37,12 +37,30 @@
   package:
     name:
         - nmap
-        - docker
         - git
         - git-extras
         - zsh
         - flatpak
     state: latest
+
+- name: install docker (all)
+  become: yes
+  package:
+    name:
+      - docker
+    state: latest
+  when: (ansible_facts['distribution'] != "Fedora")
+
+- name: install docker (Fedora)
+  become: yes
+  package:
+    name:
+        - docker-ce
+        - docker-ce-cli
+        - docker-ce-rootless-extras
+        - docker-scan-plugin
+    state: latest
+  when: (ansible_facts['distribution'] == "Fedora")
 
 - name: add flatpak repositories
   flatpak_remote:
