@@ -32,7 +32,7 @@
   when: (ansible_facts['distribution'] == "Ubuntu" or
          ansible_facts['distribution'] == "Debian")
 
-- name: install packages (nmap, docker, git, zsh, flatpak)
+- name: install packages (nmap, git, zsh, flatpak)
   become: yes
   package:
     name:
