@@ -15,6 +15,18 @@ is_os_dnf_rpm_based() {
     return 1
 }
 
+# Is this Amazon Linux 
+is_os_amzn_linux_based() {
+    local OS_NAME
+    OS_NAME=$(get_os_name)
+
+    if [ "${OS_NAME}" = "Amazon Linux" ]; then
+        return 0
+    fi
+
+    return 1
+}
+
 # Is this an RPM based distro
 is_os_yum_rpm_based() {
     local OS_NAME
