@@ -72,6 +72,7 @@
   when: ansible_pkg_mgr in ('yum')
 
 - name: configure NodeJS repository
+  become: yes
   command:
     cmd: 'bash /tmp/setup_lts.x.sh'
   when: not ansible_pkg_mgr in ('dnf')
