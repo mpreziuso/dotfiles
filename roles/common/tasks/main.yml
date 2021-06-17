@@ -51,7 +51,7 @@
     state: latest
   when: (ansible_facts['distribution'] != "Fedora")
 
-- name: install docker (Fedora)
+- name: install docker, ripgrep (Fedora)
   become: yes
   package:
     name:
@@ -59,6 +59,7 @@
         - docker-ce-cli
         - docker-ce-rootless-extras
         - docker-scan-plugin
+        - ripgrep
     state: latest
   when: (ansible_facts['distribution'] == "Fedora")
 
