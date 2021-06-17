@@ -74,6 +74,7 @@ let g:completion_matching_strategy_list = ['exact', 'substring', 'fuzzy']
 
 lua require'lspconfig'.tsserver.setup{ on_attach=require'completion'.on_attach }
 lua require'lspconfig'.gopls.setup{ on_attach=require'completion'.on_attach }
+lua require'lspconfig'.bashls.setup{}
 
 if has('nvim-0.5')
     augroup javalsp

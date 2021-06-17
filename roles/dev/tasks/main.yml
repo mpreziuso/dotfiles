@@ -57,6 +57,35 @@
       src: files/nvim
       dest: ~/.config
 
+- name: get NodeJS install script (deb distro)
+  get_url:
+    url: 'https://deb.nodesource.com/setup_lts.x'
+    dest: /tmp/setup_lts.x.sh
+    mode: 0755
+  when: ansible_pkg_mgr in ('apt')
+
+- name: get NodeJS install script (rpm distro)
+  get_url:
+    url: 'https://rpm.nodesource.com/setup_lts.x'
+    dest: /tmp/setup_lts.x.sh
+    mode: 0755
+  when: ansible_pkg_mgr in ('yum')
+
+- name: configure NodeJS repository
+  command:
+    cmd: 'bash /tmp/setup_lts.x.sh'
+  when: not ansible_pkg_mgr in ('dnf')
+
+- name: install NodeJS
+  become: yes
+  package:
+    name: nodejs
+
+- name: install bash-language-server
+  become: yes
+  command:
+    cmd: 'npm i -g bash-language-server'
+
 - name: install Java 11 (Fedora)
   become: yes
   package:
@@ -96,7 +125,6 @@
   command: /opt/apache-maven-{{ apache_maven_version }}/bin/mvn clean install -DskipTests
   args:
       chdir: ~/dev/eclipse/eclipse.jdt.ls
-
 
 - name: remove possible incompatible eclipse.jdt.ls state
   file:
