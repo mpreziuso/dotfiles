@@ -22,15 +22,15 @@
       update_cache: yes
       force_apt_get: yes
       cache_valid_time: 3600
-  when: (ansible_facts['distribution'] == "Ubuntu" or
-         ansible_facts['distribution'] == "Debian")
+  when:
+    - ansible_os_family == 'Debian'
 
 - name: update all packages (APT)
   become: yes
   apt:
       upgrade: dist
-  when: (ansible_facts['distribution'] == "Ubuntu" or
-         ansible_facts['distribution'] == "Debian")
+  when:
+    - ansible_os_family == 'Debian'
 
 - name: install packages (nmap, git, zsh, flatpak)
   become: yes
