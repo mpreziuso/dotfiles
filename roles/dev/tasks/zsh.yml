@@ -1,0 +1,32 @@
+---
+- name: clone oh-my-zsh
+  git:
+      repo: https://github.com/ohmyzsh/ohmyzsh.git
+      dest: ~/.oh-my-zsh
+      version: master
+      accept_hostkey: yes
+
+- name: install cht.sh
+  become: yes
+  copy:
+      src: files/cht.sh
+      dest: /usr/local/bin/cht.sh
+      mode: 0755
+
+- name: add cht.sh autocompletion
+  copy:
+      src: files/zsh_cht
+      dest: ~/.zsh.d/_cht
+
+- name: install zsh autocompletions
+  git:
+      repo: https://github.com/zsh-users/zsh-completions
+      dest: ~/.oh-my-zsh/custom/plugins/zsh-completions
+      version: master
+      accept_hostkey: yes
+
+- name: configure zsh
+  copy:
+      src: files/zshrc
+      dest: ~/.zshrc
+

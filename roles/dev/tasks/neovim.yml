@@ -1,0 +1,13 @@
+---
+- name: install neovim
+  become: yes
+  get_url:
+      url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
+      dest: /usr/local/bin/nvim
+      mode: 0755
+
+- name: configure neovim
+  copy:
+      src: files/nvim
+      dest: ~/.config
+

@@ -1,8 +1,4 @@
-- name: Check is NodeJS installed
-  shell: command -v node >/dev/null 2>&1
-  register: is_nodejs_exist
-  ignore_errors: yes
-
+---
 - name: install dbeaver
   flatpak:
       name: io.dbeaver.DBeaverCommunity
@@ -19,136 +15,22 @@
       dest: /usr/local/bin/docker-compose
       mode: 0755
 
-- name: clone oh-my-zsh
-  git:
-      repo: https://github.com/ohmyzsh/ohmyzsh.git
-      dest: ~/.oh-my-zsh
-      version: master
-      accept_hostkey: yes
+- name: set up ZSH
+  include_role:
+    name: dev
+    tasks_from: zsh
 
-- name: install cht.sh
-  become: yes
-  copy:
-      src: files/cht.sh
-      dest: /usr/local/bin/cht.sh
-      mode: 0755
+- name: set up Neovim
+  include_role:
+    name: dev
+    tasks_from: neovim
 
-- name: add cht.sh autocompletion
-  copy:
-      src: files/zsh_cht
-      dest: ~/.zsh.d/_cht
+- name: set up Javascript dev environment
+  include_role:
+    name: dev
+    tasks_from: javascript
 
-- name: install zsh autocompletions
-  git:
-      repo: https://github.com/zsh-users/zsh-completions
-      dest: ~/.oh-my-zsh/custom/plugins/zsh-completions
-      version: master
-      accept_hostkey: yes
-
-- name: configure zsh
-  copy:
-      src: files/zshrc
-      dest: ~/.zshrc
-
-- name: install neovim
-  become: yes
-  get_url:
-      url: https://github.com/neovim/neovim/releases/download/nightly/nvim.appimage
-      dest: /usr/local/bin/nvim
-      mode: 0755
-
-- name: configure neovim
-  copy:
-      src: files/nvim
-      dest: ~/.config
-
-- name: get NodeJS install script (deb distro)
-  get_url:
-    url: 'https://deb.nodesource.com/setup_lts.x'
-    dest: /tmp/setup_lts.x.sh
-    mode: 0755
-  when:
-    - ansible_pkg_mgr in ('apt')
-    - is_nodejs_exist
-
-- name: get NodeJS install script (rpm distro)
-  get_url:
-    url: 'https://rpm.nodesource.com/setup_lts.x'
-    dest: /tmp/setup_lts.x.sh
-    mode: 0755
-  when:
-    - ansible_pkg_mgr in ('yum')
-    - is_nodejs_exist
-
-- name: configure NodeJS repository
-  become: yes
-  command:
-    cmd: 'bash /tmp/setup_lts.x.sh'
-  when:
-    - not ansible_pkg_mgr in ('dnf')
-    - is_nodejs_exist
-
-- name: install NodeJS
-  become: yes
-  package:
-    name: nodejs
-  when:
-    - is_nodejs_exist
-
-- name: install bash-language-server
-  become: yes
-  command:
-    cmd: 'npm i -g bash-language-server'
-
-- name: install Java 11 (Fedora)
-  become: yes
-  package:
-    name: java-11-openjdk-devel
-    state: latest
-  when: ansible_pkg_mgr in ('dnf')
-
-- name: install Java 11 (Ubuntu)
-  become: yes
-  package:
-    name: openjdk-11-jdk
-    state: latest
-  when: ansible_pkg_mgr in ('apt')
-
-- name: install maven
-  become: yes
-  unarchive:
-      src: https://ftp.heanet.ie/mirrors/www.apache.org/dist/maven/maven-3/{{ apache_maven_version }}/binaries/apache-maven-{{ apache_maven_version }}-bin.tar.gz
-      dest: /opt
-      remote_src: yes
-  when: "'$(which mvn)' is not file"
-
-- name: install gradle
-  become: yes
-  unarchive:
-      src: https://downloads.gradle-dn.com/distributions/gradle-{{ gradle_version }}-bin.zip
-      dest: /opt
-      remote_src: yes
-  when: "'$(which gradle)' is not file"
-
-- name: clone eclipse.jdt.ls
-  git:
-      repo: https://github.com/eclipse/eclipse.jdt.ls
-      dest: ~/dev/eclipse/eclipse.jdt.ls
-
-- name: build eclipse.jdt.ls
-  command: /opt/apache-maven-{{ apache_maven_version }}/bin/mvn clean install -DskipTests
-  args:
-      chdir: ~/dev/eclipse/eclipse.jdt.ls
-
-- name: remove possible incompatible eclipse.jdt.ls state
-  file:
-      path: ~/.local/share/eclipse
-      state: absent
-
-- name: configure Java LSP
-  become: yes
-  copy:
-      src: files/nvim/java-lsp.sh
-      dest: /usr/local/bin/java-lsp.sh
-      mode: 0755
-
+- name: set up Java dev environment
+  include_role:
+    name: dev 
+    tasks_from: java

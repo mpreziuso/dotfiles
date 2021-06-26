@@ -3,6 +3,6 @@
 - name: Bootstrap development environment
   hosts: local
   roles:
-      - common
-      - dev
+    - common
+    - dev
 

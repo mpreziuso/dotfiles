@@ -1,0 +1,43 @@
+---
+- name: Gather package facts
+  package_facts:
+    manager: auto
+
+- name: get NodeJS install script (deb distro)
+  get_url:
+    url: 'https://deb.nodesource.com/setup_lts.x'
+    dest: /tmp/setup_lts.x.sh
+    mode: 0755
+  when:
+    - ansible_pkg_mgr in ('apt')
+    - '"nodejs" not in ansible_facts.packages'
+
+- name: get NodeJS install script (rpm distro)
+  get_url:
+    url: 'https://rpm.nodesource.com/setup_lts.x'
+    dest: /tmp/setup_lts.x.sh
+    mode: 0755
+  when:
+    - ansible_pkg_mgr in ('yum')
+    - '"nodejs" not in ansible_facts.packages'
+
+- name: configure NodeJS repository
+  become: yes
+  command:
+    cmd: 'bash /tmp/setup_lts.x.sh'
+  when:
+    - not ansible_pkg_mgr in ('dnf')
+    - '"nodejs" not in ansible_facts.packages'
+
+- name: install NodeJS
+  become: yes
+  package:
+    name: nodejs
+  when:
+    - '"nodejs" not in ansible_facts.packages'
+
+- name: install bash-language-server
+  become: yes
+  command:
+    cmd: 'npm i -g bash-language-server'
+
