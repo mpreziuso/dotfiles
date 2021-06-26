@@ -36,8 +36,13 @@
   when:
     - '"nodejs" not in ansible_facts.packages'
 
+- name: check if bash-language-server is installed
+  command: npm ls bash-language-server -g
+  register: bls_is_installed
+
 - name: install bash-language-server
   become: yes
-  command:
-    cmd: 'npm i -g bash-language-server'
+  command: 'npm i -g bash-language-server'
+  when:
+    - not bls_is_installed
 
