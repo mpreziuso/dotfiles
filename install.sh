@@ -12,7 +12,7 @@ main() {
 
     # Ensure ansible is installed
     which ansible > /dev/null && \
-        echo "[OK]: Ansible is installed. Please execute playbook." ||
+        echo "[OK]: Ansible is installed." ||
         install ansible
 }
 
