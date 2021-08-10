@@ -1,37 +1,5 @@
 ---
 # This task contains common plays that will be run on all nodes
-
-- name: upgrade all packages (DNF)
-  become: yes
-  dnf:
-      name: "*"
-      state: latest
-  when: ansible_facts['distribution'] == "Fedora"
-
-- name: upgrade all packages (YUM)
-  become: yes
-  yum:
-      name: "*"
-      state: latest
-  when: (ansible_facts['distribution'] == "CentOS" or
-         ansible_facts['distribution'] == "RedHat")
-
-- name: update all apt repositories (APT)
-  become: yes
-  apt:
-      update_cache: yes
-      force_apt_get: yes
-      cache_valid_time: 3600
-  when:
-    - ansible_os_family == 'Debian'
-
-- name: update all packages (APT)
-  become: yes
-  apt:
-      upgrade: dist
-  when:
-    - ansible_os_family == 'Debian'
-
 - name: install packages (nmap, git, zsh, flatpak)
   become: yes
   package:
@@ -95,3 +63,27 @@
   file:
       path: ~/.zsh.d
       state: directory
+
+- name: disable coredumps (via sysctl)
+  become: yes
+  ansible.posix.sysctl:
+      name: fs.suid_dumpable
+      value: '0'
+      sysctl_file: /etc/sysctl.d/99-sysctl.conf
+      reload: yes
+
+- name: disable coredumps (via limits)
+  become: yes
+  community.general.pam_limits:
+    domain: '*'
+    limit_type: hard
+    limit_item: core
+    value: 0
+
+- name: increase max_user_watches
+  become: yes
+  ansible.posix.sysctl:
+      name: fs.inotify.max_user_watches
+      value: '8524288'
+      sysctl_file: /etc/sysctl.d/99-sysctl.conf
+      reload: yes
