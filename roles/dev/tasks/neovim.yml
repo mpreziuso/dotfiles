@@ -11,3 +11,5 @@
       src: files/nvim
       dest: ~/.config
 
+- name: install neovim plugins
+  command: /usr/local/bin/nvim -c 'PlugInstall' -c ':qa!'
