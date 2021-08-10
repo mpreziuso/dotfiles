@@ -29,24 +29,24 @@
       remote_src: yes
   when: "'$(which gradle)' is not file"
 
-- name: clone eclipse.jdt.ls
-  git:
-      repo: https://github.com/eclipse/eclipse.jdt.ls
-      dest: ~/dev/eclipse/eclipse.jdt.ls
-
-- name: build eclipse.jdt.ls
-  command: /opt/apache-maven-{{ apache_maven_version }}/bin/mvn clean install -DskipTests
-  args:
-      chdir: ~/dev/eclipse/eclipse.jdt.ls
-
-- name: remove possible incompatible eclipse.jdt.ls state
-  file:
-      path: ~/.local/share/eclipse
-      state: absent
-
-- name: configure Java LSP
-  become: yes
-  copy:
-      src: files/nvim/java-lsp.sh
-      dest: /usr/local/bin/java-lsp.sh
-      mode: 0755
+#- name: clone eclipse.jdt.ls
+#  git:
+#      repo: https://github.com/eclipse/eclipse.jdt.ls
+#      dest: ~/dev/eclipse/eclipse.jdt.ls
+#
+#- name: build eclipse.jdt.ls
+#  command: /opt/apache-maven-{{ apache_maven_version }}/bin/mvn clean install -DskipTests
+#  args:
+#      chdir: ~/dev/eclipse/eclipse.jdt.ls
+#
+#- name: remove possible incompatible eclipse.jdt.ls state
+#  file:
+#      path: ~/.local/share/eclipse
+#      state: absent
+#
+#- name: configure Java LSP
+#  become: yes
+#  copy:
+#      src: files/nvim/java-lsp.sh
+#      dest: /usr/local/bin/java-lsp.sh
+#      mode: 0755

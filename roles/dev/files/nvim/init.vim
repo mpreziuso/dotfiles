@@ -78,12 +78,13 @@ lua require'lspconfig'.tsserver.setup{ on_attach=require'completion'.on_attach }
 lua require'lspconfig'.gopls.setup{ on_attach=require'completion'.on_attach }
 lua require'lspconfig'.bashls.setup{ on_attach=require'completion'.on_attach }
 
-if has('nvim-0.5')
-    augroup javalsp
-        au!
-        au FileType java lua require('jdtls').start_or_attach({cmd = {'java-lsp.sh'}, root_dir = require('jdtls.setup').find_root({'gradle.build', 'pom.xml'})})
-    augroup end
-endif
+" Disabling Java LSP for now
+" if has('nvim-0.5')
+"     augroup javalsp
+"         au!
+"         au FileType java lua require('jdtls').start_or_attach({cmd = {'java-lsp.sh'}, root_dir = require('jdtls.setup').find_root({'gradle.build', 'pom.xml'})})
+"     augroup end
+" endif
 
 augroup fmt
   autocmd!
