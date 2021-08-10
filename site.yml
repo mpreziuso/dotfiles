@@ -2,6 +2,41 @@
 # This playbook configures the whole development environment
 - name: Bootstrap development environment
   hosts: local
+  pre_tasks:
+    # Update packages
+    - name: upgrade all packages (DNF)
+      become: yes
+      dnf:
+          name: "*"
+          state: latest
+      when: ansible_facts['distribution'] == "Fedora"
+    
+    - name: upgrade all packages (YUM)
+      become: yes
+      yum:
+          name: "*"
+          state: latest
+      when: (ansible_facts['distribution'] == "CentOS" or
+             ansible_facts['distribution'] == "RedHat")
+    
+    - name: update all apt repositories (APT)
+      become: yes
+      apt:
+          update_cache: yes
+          force_apt_get: yes
+          cache_valid_time: 3600
+      when:
+        - ansible_os_family == 'Debian'
+    
+    - name: update all packages (APT)
+      become: yes
+      apt:
+          upgrade: dist
+      when:
+        - ansible_os_family == 'Debian'
+    # Install Ansible Galaxy collections
+    - name: install Ansible Galaxy collections  
+      command: ansible-galaxy collection install -r galaxy/requirements.yml -p .
   roles:
     - common
     - dev
