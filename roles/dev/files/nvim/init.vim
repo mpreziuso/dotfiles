@@ -50,6 +50,7 @@ Plug 'nvim-telescope/telescope-fzy-native.nvim'
 Plug 'neovim/nvim-lspconfig'
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'mfussenegger/nvim-jdtls'
+Plug 'sbdchd/neoformat'
 call plug#end()
 
 lua << EOF
@@ -64,7 +65,8 @@ require('telescope').setup {
             override_generic_sorter = false,
             override_file_sorter = true,
         }
-    }
+    },
+    file_ignore_patterns = { "node_modules", "ansible_collections" }
 }
 require('telescope').load_extension('fzy_native')
 
@@ -82,6 +84,11 @@ if has('nvim-0.5')
         au FileType java lua require('jdtls').start_or_attach({cmd = {'java-lsp.sh'}, root_dir = require('jdtls.setup').find_root({'gradle.build', 'pom.xml'})})
     augroup end
 endif
+
+augroup fmt
+  autocmd!
+  autocmd BufWritePre * undojoin | Neoformat
+augroup END
 
 colorscheme gruvbox
 set background=dark
