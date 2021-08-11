@@ -24,7 +24,6 @@ plugins=(git
 )
 
 export FPATH="~/.zsh.d:$FPATH"
-export PATH=/opt/gradle-7.0.2/bin:/opt/apache-maven-3.8.1/bin:$PATH
 
 source $ZSH/oh-my-zsh.sh
 

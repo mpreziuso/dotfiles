@@ -5,3 +5,19 @@
     src: https://golang.org/dl/go{{ go_version }}.linux-{{ arch }}.tar.gz
     dest: /usr/local
     remote_src: yes
+  when:
+    - "'/usr/local/bin/go' is not file"
+
+- name: symlink go
+  become: yes
+  file:
+    src: /usr/local/go/bin/go
+    dest: /usr/local/bin/go
+    state: link
+
+- name: symlink gofmt
+  become: yes
+  file:
+    src: /usr/local/go/bin/gofmt
+    dest: /usr/local/bin/gofmt
+    state: link

@@ -1,0 +1,17 @@
+---
+- name: download and extract ripgrep
+  become: yes
+  unarchive:
+    src: https://github.com/BurntSushi/ripgrep/releases/download/{{ rg_version }}/ripgrep-{{ rg_version }}-x86_64-unknown-linux-musl.tar.gz
+    dest: /usr/local
+    remote_src: yes
+  when:
+    - "'/usr/local/bin/rg' is not file"
+
+- name: symlink rg
+  become: yes
+  file:
+    src: /usr/local/ripgrep-{{ rg_version }}-x86_64-unknown-linux-musl/rg
+    dest: /usr/local/bin/rg
+    state: link
+

@@ -1,4 +1,9 @@
 ---
+- name: install ripgrep
+  include_role:
+    name: dev
+    tasks_from: ripgrep
+
 - name: install dbeaver
   include_role:
     name: dev

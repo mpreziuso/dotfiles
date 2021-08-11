@@ -37,4 +37,3 @@
     minute: "0"
     hour: "0"
     job: "flatpak update -y --noninteractive"
-    cron_file: ansible-flatpak-autoupdate

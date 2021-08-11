@@ -19,7 +19,14 @@
       src: https://www.apache.org/dist/maven/maven-3/{{ apache_maven_version }}/binaries/apache-maven-{{ apache_maven_version }}-bin.tar.gz
       dest: /opt
       remote_src: yes
-  when: "'$(which mvn)' is not file"
+  when: "'/usr/local/bin/mvn' is not file"
+
+- name: symlink maven
+  become: yes
+  file:
+    src: /opt/apache-maven-{{ apache_maven_version }}/bin/mvn
+    dest: /usr/local/bin/mvn
+    state: link
 
 - name: install gradle
   become: yes
@@ -27,7 +34,14 @@
       src: https://downloads.gradle-dn.com/distributions/gradle-{{ gradle_version }}-bin.zip
       dest: /opt
       remote_src: yes
-  when: "'$(which gradle)' is not file"
+  when: "'/usr/local/bin/gradle' is not file"
+
+- name: symlink gradle
+  become: yes
+  file:
+    src: /opt/gradle-{{ gradle_version }}/bin/gradle
+    dest: /usr/local/bin/gradle
+    state: link
 
 #- name: clone eclipse.jdt.ls
 #  git:

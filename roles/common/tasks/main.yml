@@ -1,6 +1,6 @@
 ---
 # This task contains common plays that will be run on all nodes
-- name: install packages (nmap, git, zsh, flatpak, ripgrep)
+- name: install packages (nmap, git, zsh, flatpak)
   become: yes
   package:
     name:
@@ -9,7 +9,6 @@
         - git-extras
         - zsh
         - flatpak
-        - ripgrep
     state: latest
 
 - name: add flatpak repositories
