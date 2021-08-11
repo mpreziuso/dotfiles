@@ -29,3 +29,12 @@
 
 # Amazon Linux 2 already auto-updates weekly
 # see: https://docs.aws.amazon.com/workspaces/latest/adminguide/workspace-maintenance.html
+
+- name: Flatpak auto-update
+  cron:
+    name: Flatpak auto-update
+    weekday: "*"
+    minute: "0"
+    hour: "0"
+    job: "flatpak update -y --noninteractive"
+    cron_file: ansible-flatpak-autoupdate
