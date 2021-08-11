@@ -3,7 +3,7 @@
 - name: Bootstrap development environment
   hosts: local
   pre_tasks:
-    - name: Set DPKG architecture
+    - name: Set architecture
       set_fact:
         arch: "{{ 'amd64' if ansible_architecture == 'x86_64' else ansible_architecture }}"
     # Update packages

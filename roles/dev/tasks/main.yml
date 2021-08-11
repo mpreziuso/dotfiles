@@ -1,19 +1,16 @@
 ---
 - name: install dbeaver
-  flatpak:
-      name: io.dbeaver.DBeaverCommunity
-      state: present
-      method: user
+  include_role:
+    name: dev
+    tasks_from: dbeaver
   when:
       - ansible_facts['distribution'] == "Debian"
       - ansible_lsb['id'] == "Rasbpian"
 
-- name: install docker-compose
-  become: yes
-  get_url:
-      url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
-      dest: /usr/local/bin/docker-compose
-      mode: 0755
+- name: install docker
+  include_role:
+    name: dev
+    tasks_from: docker
 
 - name: set up ZSH
   include_role:
