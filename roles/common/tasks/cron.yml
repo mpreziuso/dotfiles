@@ -1,0 +1,31 @@
+---
+- name: Package manager auto-update
+  become: yes
+  cron:
+    name: DNF auto-update
+    weekday: "*"
+    minute: "0"
+    hour: "0"
+    user: root
+    job: "/usr/bin/dnf update -y"
+    cron_file: ansible-dnf-autoupdate
+  when:
+    - ansible_facts['distribution'] == "Fedora"
+
+- name: Package manager auto-update
+  become: yes
+  cron:
+    name: APT auto-update
+    weekday: "*"
+    minute: "0"
+    hour: "0"
+    user: root
+    job: "/usr/bin/apt-get update && DEBIAN_FRONTEND=noninteractive /usr/bin/apt-get upgrade -y"
+    cron_file: ansible-apt-autoupdate
+  when:
+    - ansible_facts['distribution'] == "Ubuntu"
+    - ansible_facts['distribution'] == "Debian"
+    - ansible_facts['distribution'] == "Raspbian"
+
+# Amazon Linux 2 already auto-updates weekly
+# see: https://docs.aws.amazon.com/workspaces/latest/adminguide/workspace-maintenance.html

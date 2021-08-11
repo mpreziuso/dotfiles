@@ -87,3 +87,8 @@
       value: '8524288'
       sysctl_file: /etc/sysctl.d/99-sysctl.conf
       reload: yes
+
+- name: configure common cron jobs
+  include_role:
+    name: common
+    tasks_from: cron
