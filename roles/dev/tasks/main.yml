@@ -34,3 +34,8 @@
   include_role:
     name: dev 
     tasks_from: java
+
+- name: set up Go dev environment
+  include_role:
+    name: dev 
+    tasks_from: go

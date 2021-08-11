@@ -1,0 +1,7 @@
+---
+- name: install Go 
+  become: yes
+  unarchive:
+    src: https://golang.org/dl/go{{ go_version }}.linux-{{ arch }}.tar.gz
+    dest: /usr/local
+    remote_src: yes
