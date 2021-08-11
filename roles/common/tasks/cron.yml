@@ -7,7 +7,7 @@
     minute: "0"
     hour: "0"
     user: root
-    job: "/usr/bin/dnf update -y"
+    job: "/usr/bin/dnf update -y -q"
     cron_file: ansible-dnf-autoupdate
   when:
     - ansible_facts['distribution'] == "Fedora"
