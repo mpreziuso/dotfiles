@@ -1,7 +1,7 @@
 ---
 docker_compose_version: 1.29.2
 apache_maven_version: 3.8.1
-gradle_version: 7.0.2
+gradle_version: 7.1.1
 go_version: 1.16.7
 rg_version: 13.0.0
 current_user: "{{ ansible_user_id }}"

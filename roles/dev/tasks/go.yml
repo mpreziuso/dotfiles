@@ -6,7 +6,7 @@
     dest: /usr/local
     remote_src: yes
   when:
-    - "'/usr/local/bin/go' is not file"
+    - "'/usr/local/go/bin/go' is not file"
 
 - name: symlink go
   become: yes

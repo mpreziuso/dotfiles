@@ -19,7 +19,7 @@
       src: https://www.apache.org/dist/maven/maven-3/{{ apache_maven_version }}/binaries/apache-maven-{{ apache_maven_version }}-bin.tar.gz
       dest: /opt
       remote_src: yes
-  when: "'/usr/local/bin/mvn' is not file"
+  when: "'/opt/apache-maven-{{ apache_maven_version }}/bin/mvn' is not file"
 
 - name: symlink maven
   become: yes
@@ -34,7 +34,7 @@
       src: https://downloads.gradle-dn.com/distributions/gradle-{{ gradle_version }}-bin.zip
       dest: /opt
       remote_src: yes
-  when: "'/usr/local/bin/gradle' is not file"
+  when: "'/opt/gradle-{{ gradle_version }}/bin/gradle' is not file"
 
 - name: symlink gradle
   become: yes
