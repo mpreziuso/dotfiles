@@ -1,4 +1,18 @@
 ---
+- name: get Go version (if present)
+  command: go version
+  register: goversion
+  when:
+    - "'/usr/local/go/bin/go' is file"
+
+- name: delete previous Go installations before updating
+  become: yes
+  file:
+    state: absent
+    path: /usr/local/go
+  when:
+    - go_version is undefined or goversion != "go version go{{ go_version }} linux/{{ arch }}"
+      
 - name: install Go 
   become: yes
   unarchive:
@@ -6,7 +20,7 @@
     dest: /usr/local
     remote_src: yes
   when:
-    - "'/usr/local/go/bin/go' is not file"
+    - go_version is undefined or goversion != "go version go{{ go_version }} linux/{{ arch }}"
 
 - name: symlink go
   become: yes
