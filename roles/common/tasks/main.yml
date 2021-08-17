@@ -1,6 +1,6 @@
 ---
 # This task contains common plays that will be run on all nodes
-- name: install packages (nmap, git, zsh, flatpak)
+- name: install packages (nmap, git, zsh, flatpak, rsyslog)
   become: yes
   package:
     name:
@@ -9,6 +9,7 @@
         - git-extras
         - zsh
         - flatpak
+        - rsyslog
     state: latest
 
 - name: add flatpak repositories
