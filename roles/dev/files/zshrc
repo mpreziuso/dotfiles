@@ -37,8 +37,3 @@ zstyle ':completion:*:*:docker-*:*' option-stacking yes
 export EDITOR="$(which nvim)"
 export VISUAL="$(which nvim)"
 alias vi="$(which nvim)"
-
-# Additional aliases
-if [ -f ~/.zsh_aliases ]; then 
-    . ~/.zsh_aliases
-fi

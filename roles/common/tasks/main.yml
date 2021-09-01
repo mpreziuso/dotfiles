@@ -19,13 +19,6 @@
       flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
       method: user
 
-# Set up aliases
-- name: set up aliases
-  copy:
-      src: files/aliases
-      dest: ~/.zsh_aliases
-      mode: 0644
-
 - name: change shell to zsh (Amazon Linux)
   lineinfile:
       path: ~/.bashrc
