@@ -46,6 +46,14 @@
       sysctl_file: /etc/sysctl.d/99-sysctl.conf
       reload: yes
 
+- name: increase max virtual memory areas (via sysctl)
+  become: yes
+  ansible.posix.sysctl:
+      name: vm.max_map_count
+      value: '262144'
+      sysctl_file: /etc/sysctl.d/99-sysctl.conf
+      reload: yes
+        
 - name: disable coredumps (via limits)
   become: yes
   community.general.pam_limits:
